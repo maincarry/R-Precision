@@ -1,9 +1,13 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import argparse
 import os
 import pprint
 import random
 import sys
-import pickle
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
@@ -17,6 +21,12 @@ from nltk.tokenize import RegexpTokenizer
 import torchvision.transforms as transforms
 from miscc.config import cfg, cfg_from_file
 from model import RNN_ENCODER, CNN_ENCODER
+
+if sys.version_info[0] == 2:
+    import cPickle as pickle
+else:
+    import pickle
+
 
 dir_path = (os.path.abspath(os.path.join(os.path.realpath(__file__), './.')))
 sys.path.append(dir_path)
