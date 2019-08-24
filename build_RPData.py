@@ -6,9 +6,8 @@ import sys
 
 import numpy as np
 from PIL import Image
-from tqdm import tqdm
-
 from nltk.tokenize import RegexpTokenizer
+from tqdm import tqdm
 
 NUM_DIR = 50
 NUM_IMG_PER_DIR = 600
@@ -32,7 +31,7 @@ def generateSample(dir, rand=False):
                 # TODO: CHANGE THIS TO FIT YOUR NAMING
                 txt_file = os.path.join(args.text, os.path.basename(dir), "{}.txt".format(fname.split("-")[0][:-2]))
                 assert os.path.isfile(txt_file), txt_file
-                sentence_num = int(fname[-1]) # TODO: CHANGE THIS TO FIT YOUR NAMING
+                sentence_num = int(fname[-1])  # TODO: CHANGE THIS TO FIT YOUR NAMING
                 with open(txt_file) as f:
                     all_texts = f.readlines()
                     text = all_texts[sentence_num]
@@ -71,7 +70,7 @@ def saveTestFiles(data, out, all_caps):
         # fakes = np.random.choice(all_caps, 99, replace=False)
         fakes = sampleFakeSentence(all_caps, all_txts)
 
-        fakes = [l+"\n" for l in fakes]
+        fakes = [l + "\n" for l in fakes]
         texts = [real] + fakes
         # save files
         img.save(os.path.join(out_path, "{}.png".format(count)))
@@ -90,7 +89,7 @@ def read_all_txt(directory):
         with open(full_path) as f:
             captions = f.read().split('\n')
             for cap in captions:
-                if len(cap) == 0:
+                if len(cap) == 0 or len(cap) == 1:
                     continue
                 cap = cap.replace("\ufffd\ufffd", " ")
                 # picks out sequences of alphanumeric characters as tokens
@@ -107,12 +106,8 @@ def read_all_txt(directory):
                     t = t.encode('ascii', 'ignore').decode('ascii')
                     if len(t) > 0:
                         tokens_new.append(t)
-                all_s.append(" ".join(tokens_new)+"\n")
+                all_s.append(" ".join(tokens_new) + "\n")
     return all_s
-
-
-
-
 
 
 def main(dirs, out, rand=False, all_caps_file=""):
@@ -136,7 +131,8 @@ def main(dirs, out, rand=False, all_caps_file=""):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate RP test data from evaluation output.')
     parser.add_argument('path', type=str, help='Path to image directory')
-    parser.add_argument('-c', dest="cap", default='all_texts.txt', help='Optional: specify all texts file. Default to all texts in dataset.')
+    parser.add_argument('-c', dest="cap", default='all_texts.txt',
+                        help='Optional: specify all texts file. Default to all texts in dataset.')
     parser.add_argument('-d', dest='out', type=str, help='Output directory', default='./')
     parser.add_argument('-t', dest='text', type=str, help='Directory to text data',
                         default='/dataset/birds/text')

@@ -8,30 +8,29 @@ import os
 import pprint
 import random
 import sys
+
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-from torch.autograd import Variable
-from tqdm import tqdm
-
 import torch.utils.data as data
-from PIL import Image
-from nltk.tokenize import RegexpTokenizer
-
 import torchvision.transforms as transforms
+from PIL import Image
 from miscc.config import cfg, cfg_from_file
 from model import RNN_ENCODER, CNN_ENCODER
+from nltk.tokenize import RegexpTokenizer
+from torch.autograd import Variable
+from tqdm import tqdm
 
 if sys.version_info[0] == 2:
     import cPickle as pickle
 else:
     import pickle
 
-
 dir_path = (os.path.abspath(os.path.join(os.path.realpath(__file__), './.')))
 sys.path.append(dir_path)
 
 WORDS_NUM = 18
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Evaluate RP. Use build_RPData.py to prepare RP_DATA directory.')
@@ -44,6 +43,7 @@ def parse_args():
     parser.add_argument('--manualSeed', type=int, help='manual seed')
     args = parser.parse_args()
     return args
+
 
 # used to feed the R-Precision Test
 class EvalRPDataset(data.Dataset):
@@ -63,9 +63,7 @@ class EvalRPDataset(data.Dataset):
         # self.captions = [[[s0],[s1],...], [file1] ...]
 
         self.captions, self.ixtoword, \
-            self.wordtoix, self.n_words = self.load_text_data(data_dir)
-
-
+        self.wordtoix, self.n_words = self.load_text_data(data_dir)
 
     def load_captions(self, data_dir):
         def tokenize(in_captions):
@@ -101,9 +99,6 @@ class EvalRPDataset(data.Dataset):
                 all_captions.append(captions)
 
         return all_captions
-
-
-
 
     def load_text_data(self, data_dir):
         # entry from init
@@ -163,7 +158,6 @@ class EvalRPDataset(data.Dataset):
             ret_cap.append(x)
             ret_caplen.append(x_len)
 
-
         return ret_cap, ret_caplen
 
     def __getitem__(self, index):
@@ -172,7 +166,6 @@ class EvalRPDataset(data.Dataset):
         image = image.unsqueeze(0)
         captions, cap_lens = self.get_caption(index)
         return image, captions, cap_lens
-
 
     def __len__(self):
         return self.length
