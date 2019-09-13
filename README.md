@@ -23,10 +23,12 @@ Paste **eval_RP.py** into your model code directory. It requires model.py and mi
 To evaluate the RP score for a certain checkpoint:
 - Evaluate the checkpoint. AttnGAN example:
 `python3 train.py --gpu 0 --cfg cfg/eval_bird.yml`
+
 **Make sure all captions (10 per image) are evaluated for accurate result. E.g. Should have 29330 images for CUB-2011 Dataset**
 
 - Use build_RPData.py to build RPData directory from evaluated images
 `python3 build_RPData.py /netG_epoch_xxx/valid/single -t /dataset/birds/text`
+
 *You may need to change build_RPData.py to fit your naming pattern.*
 - Use eval_RP to evaluate the RP score
 `python3 eval_RP.py ./RP_DATA -c /dataset/birds/captions.pickle`
